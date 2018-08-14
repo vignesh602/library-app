@@ -1,0 +1,106 @@
+<div class="container">
+<form (ngSubmit)="submit(form)" #form="ngForm" >
+      <h2>Add Book Details</h2>
+ 
+  <div class="form-group" >
+    <input type="hidden" [(ngModel)]="bid" name="bookId" class="form-control" >
+    
+  </div>
+
+  <div class="form-group">
+  <label for="bookName">Book Name: </label>
+  <input type="text"  ngModel name="bookName" #bookName="ngModel" class="form-control" required>
+  <div class="alert alert-danger" *ngIf="bookName.touched && !bookName.valid">Book Name has to be entered</div>
+</div>
+
+<div class="form-group">
+  <label for="author">Author:</label>
+  <input type="text" ngModel name="author" #authorName="ngModel" class="form-control" required>
+  <div class="alert alert-danger" *ngIf="authorName.touched && !authorName.valid">Author Name has to be entered</div>
+</div>
+
+<div class="form-group">
+  <label for="category">Category:</label>
+    <select class="form-control" ngModel name="category" #category="ngModel" required>
+      <option selected>Choose...</option>
+      <option value="romance">Romance</option>
+      <option value="thriller">Thriller</option>
+      <option value="crime">Crime</option>
+      <option value="comedy">Comedy</option>
+      <option value="comedy">Comic</option>
+      <option value="comedy">Fiction</option>
+      <option value="comedy">Philosophy</option>
+    </select>
+    <div class="alert alert-danger" *ngIf="category.touched && !category.valid">Category has to be selected</div>
+  </div>
+  
+  <div class="form-group">
+    <label for="publishedOn">Quantity:</label>
+    <input type="text" class="form-control" ngModel name="quantity" #quantity="ngModel" required>
+    <div class="alert alert-danger" *ngIf="quantity.touched && !quantity.valid">Enter the Quantity</div>
+  </div>
+
+  <div class="form-group">
+    <label for="publishedOn">Published On:</label>
+    <input type="text" class="form-control" ngModel name="publishedOn" #publishedOn="ngModel" required>
+    <div class="alert alert-danger" *ngIf="publishedOn.touched && !publishedOn.valid">Enter the Published Date</div>
+  </div>
+  
+  <div>
+    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal" style='margin-right:16px'>
+        submit
+      </button>
+      <ng-template #backButton>
+            <button type="button" class="btn btn-outline-secondary" routerLink="/display-books">
+              Back
+            </button>
+      </ng-template>
+    <button type="button" class="btn btn-outline-secondary" *ngIf="form.invalid && (form.dirty || form.touched); else backButton" data-toggle="modal" data-target="#backButton">
+        Back
+      </button>
+
+  </div>
+</form>
+</div>
+  
+  <!-- Modal  for submit button-->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you want to add the book ?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="submit(form)">Add Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- modal popup for back button dirty, touched -->
+  <div class="modal fade" id="backButton" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you want to navigate back ?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-info" data-dismiss="modal" routerLink="/display-books">Go Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{{form.value | json}}

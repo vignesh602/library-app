@@ -1,0 +1,75 @@
+<div class="container">
+<h1>Users Data</h1>
+<div class="row">
+    <div class="col-8"></div>
+    <div class="col md">
+      <div class="form-group">
+      <!-- <div class="float-right"> -->
+          <input type="text" class="form-control" placeholder="search for the users" [(ngModel)]="searchTerm">
+        </div>
+      
+    </div>
+  </div>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">User Name</th>
+        <th scope="col">Date Of Birth</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let m of results | filter:searchTerm | paginate: { itemsPerPage: 5, currentPage: p }">
+        <td>{{m.userId}}</td>
+        <td>{{m.userName}}</td>
+        <td>{{m.dob}}</td>
+        <td><button type="button" class="btn btn-outline-warning" routerLink="/user-edit/{{m.userId}}" >Edit</button></td>
+        <!-- <td><button type="button" class="btn btn-outline-danger" data-toggle="modal" 
+          data-target="#exampleModal" style='margin-right:16px'>delete</button></td> -->
+        <td><button type="button" class="btn btn-outline-danger" (click)="openModal(true,m.userId)"  >Delete</button></td>
+      </tr>
+     
+    </tbody>
+  </table> 
+  <div class="float-right"> <pagination-controls (pageChange)="p = $event"></pagination-controls></div>
+
+  <button class="btn btn-outline-primary" (click)="goBack()">Back</button>
+</div>
+
+<!-- modal popup -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" 
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+       Do you want to delete the book {{id}} ?
+     </div>
+     <div class="modal-footer">
+         <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+         <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="delete()">Save changes</button>
+     </div>
+   </div>
+ </div>
+</div> -->
+<div id="mdlSample" class="modal fade" role="dialog" [ngStyle]="{'display': mdlSampleIsOpen ? 'block' : 'none', 'opacity': 1}">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h4 class="modal-title">My Modal</h4>
+    </div>
+    <div class="modal-body">Text here!==== {{delId}}</div>
+    <div class="modal-footer" align="right">
+               
+                <button type="button" id="btnClose" class="btn btn-danger" (click)="deletefn(delId)"> Ok</button>
+                 <button type="button" id="btnClose" class="btn btn-danger" (click)="openModal(false)"> Cancel</button>
+                </div>
+    </div>
+    </div>
+    </div>

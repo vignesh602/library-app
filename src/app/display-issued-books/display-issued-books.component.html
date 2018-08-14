@@ -1,0 +1,45 @@
+<div class="container">
+    <h1>Issued Books </h1>
+    <div class="row">
+        <div class="col-8"></div>
+        <div class="col md">
+          <div class="form-group">
+          <!-- <div class="float-right"> -->
+              <input type="text" class="form-control" placeholder="search for the record" [(ngModel)]="searchTerm">
+            </div>
+          
+        </div>
+      </div>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Record Id</th>
+            <th scope="col">Book Name</th>
+            <!-- <th scope="col">Author</th> -->
+            <th scope="col">issue Date</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">User Name</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let m of issuedBooksData | filter:searchTerm | paginate: { itemsPerPage: 5, currentPage: p }">
+            <input type="text" hidden [(ngModel)]="m.UserId" name="UserId" #userId="ngModel" >
+            <input type="text" hidden [(ngModel)]="m.BookId" name="UserId" #userId="ngModel" >
+            <td>{{m.recordId}}</td>
+            <td>{{m.bookSelected}}</td>
+            <td>{{m.issueDate}}</td>
+            <td>{{m.dueDate}}</td>
+            <td>{{m.SelectedUserName}}</td>
+             <td><button type="button" class="btn btn-outline-info" routerLink="/return-book/{{m.recordId}}"  >Return</button></td>
+            <!--<td><button type="button" class="btn btn-danger" (click)="delete(m.bookId)">Delete</button></td> -->
+    
+          </tr>
+         
+        </tbody>
+      </table> 
+      <div class="float-right"> <pagination-controls (pageChange)="p = $event"></pagination-controls></div>
+    
+      <button class="btn btn-primary" (click)="goBack()">Back</button>
+    </div>

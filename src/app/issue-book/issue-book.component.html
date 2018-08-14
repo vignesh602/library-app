@@ -1,0 +1,152 @@
+  <div class="container">
+  <h1>Issue Book</h1>
+  <form #f="ngForm" (ngSubmit)="submit(f)" >
+    <div class="row">
+    <div class="col-md-6">
+        <div class="form-group" >
+            <input type="hidden" [(ngModel)]="rid" name="recordId" class="form-control" >
+        </div>
+
+        <div class="form-group">
+          <div class="form-group">
+              <input type="hidden" class="form-control" [(ngModel)]="selectedBookId" name="BookId" >
+            </div>
+          <div class="form-group">
+              <input type="hidden" class="form-control" [(ngModel)]="selectedUserId" name="UserId" >
+            </div>
+          <label for="bookName">Book name </label>
+            
+          <div class="form-group">
+            <ng-select
+            #mySelect  
+              [items]="getBooksFromLocalStorage" (change)="onSelectedBook(selectedBook.value)" 
+              bindLabel="bookName"   #selectedBook="ngModel" [(ngModel)]="selectedBookName" name="bookSelected" required>
+        </ng-select>
+        <div class="alert alert-danger" *ngIf="selectedBook.touched && !selectedBook.valid">Book Name is required</div>
+         </div>
+            <div class="form-group">
+                <label for="bookName">User name </label>
+              <ng-select 
+              #mySelect
+                [items]="getUsersFromLocalStorage" (change)="onSelectedUser(selectedUser.value)" bindLabel="userName" #selectedUser="ngModel" [(ngModel)]="selectedUserName" name="SelectedUserName"  required>
+          </ng-select>
+          <div class="alert alert-danger" *ngIf="selectedUser.touched && !selectedUser.valid">User Name is required</div>
+              </div>
+
+      <div class="form-group">
+          <label for="issueDate">Issue Date</label>
+          <input type="email" class="form-control" [value]="date" [(ngModel)]="date" name="issueDate" #issueDate="ngModel" readonly required>
+        </div>
+        <div class="form-group">
+            <label for="dueDate">Due Date</label>
+            <input type="email" class="form-control"  [(ngModel)]="dueDate" name="dueDate" #Date="ngModel" readonly>
+          </div>
+    </div>
+    </div>
+    <div class="col-md-6" >
+        <div class="card " style="width: 35rem;">
+         <div class="card-body">
+           <h3 class="card-title">Summary</h3>
+           <div class="row" *ngIf="toggle">
+             <div class="col-md-6">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Book Name:
+                    <div class="float-right">{{selectedBookName}}</div>
+                </li>
+                <li class="list-group-item" >Author:
+                  <div class="float-right">{{selectedBookAuthor}}</div>
+              </li>
+              </ul>
+             </div>
+
+             <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" *ngIf="toggleUser">User Name:
+                        <div class="float-right">{{selectedUserName}}</div>
+                    </li>
+                  </ul>
+              
+             </div>
+           </div>
+           <ul class="list-group list-group-flush">
+              <li class="list-group-item" >Issue Date:
+                  <div class="float-right">{{issueDate.value}}</div>
+              </li>
+              <li class="list-group-item" >Due Date:
+                  <div class="float-right">{{dueDate}}</div>
+              </li>
+            </ul>
+            </div>
+
+
+          </div>
+          <div *ngIf="!mainToggle"></div>
+          <div>
+
+            <div *ngIf="mainToggle">
+            <div *ngIf="!availableToggle; else available"><h2 color="red">***Book is Unavailable***</h2> </div>
+           <ng-template #available>
+            <div *ngIf="availableToggle"><h2 color="red">***Book is Available***</h2></div>
+           </ng-template>
+          </div>
+        </div>
+    </div>
+      </div>
+      <div>
+        <button class="btn btn-outline-success" type="submit" [disabled]="(f.invalid)" style='margin-right:16px'>Submit</button>
+      <!-- <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal" style='margin-right:16px'>
+          submit
+        </button> -->
+        <ng-template #backButton>
+            <button type="button" class="btn btn-outline-secondary" routerLink="/display-issued-book">
+              Back
+            </button>
+      </ng-template>
+    <button type="button" class="btn btn-outline-secondary" *ngIf="f.invalid && (f.dirty || f.touched); else backButton" data-toggle="modal" data-target="#backButton">
+        Back
+      </button> 
+      </div>
+</form>
+  </div>
+    <!-- modal popup -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Do you want to issue the book : #{{selectedBook.value}} ?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="submit(f)">Issue Book</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal popup for back button dirty, touched -->
+  <div class="modal fade" id="backButton" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Do you want to navigate back ?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-info" data-dismiss="modal" routerLink="/display-issued-book">Go Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- {{f.value | json}} -->
+  
+

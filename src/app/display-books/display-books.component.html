@@ -1,0 +1,92 @@
+<div class="container">
+<h1>Books details</h1>
+<div class="row">
+  <div class="col-8"></div>
+  <div class="col md">
+    <div class="form-group">
+    <!-- <div class="float-right"> -->
+        <input type="text" class="form-control" placeholder="search for the book" [(ngModel)]="searchTerm">
+      </div>
+    
+  </div>
+</div>
+<table class="table" >
+    <thead>
+      <tr>
+        <th scope="col" hidden></th>
+        <th scope="col">Book Name</th>
+        <th scope="col">Author</th>
+        <th scope="col">Category</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">issued</th>
+        <th scope="col">Published On</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let m of result | filter:searchTerm | paginate: { itemsPerPage: 5, currentPage: p } " >
+        <td hidden><input type="text" [(ngModel)]="m.bookId" name="id" #idBook="ngModel" ></td>
+        <!-- <td hidden #bookId>{{m.bookId}}</td> -->
+        <td>{{m.bookName}}</td>
+        <td>{{m.author}}</td>
+        <td>{{m.category}}</td>
+        <td>{{m.quantity}}</td>
+        <td >{{checkForIssue(m.bookId)}}</td>
+        <!-- <td></td> -->
+        <td>{{m.publishedOn}}</td>
+        <td><button type="button" class="btn btn-outline-warning" routerLink="/book-form/{{m.bookId}}" >Edit</button></td>
+        <td><button type="button" class="btn btn-outline-danger" (click)="openModal(true,m.bookId)">Delete</button></td>
+        <!-- <td><button type="button" class="btn btn-outline-danger" data-toggle="modal" 
+          data-target="#exampleModal" style='margin-right:16px' (click)="deleteModal(m.bookId)" >delete</button></td> -->
+        <!-- </td> -->
+        <!-- <td><button type="button" class="btn btn-outline-warning" routerLink="/book-detail/{{m.bookId}}" >Edit</button></td> 
+          delete
+        </button></td> -->
+
+      </tr>
+     
+    </tbody>
+  </table> 
+  <div class="float-right"> <pagination-controls (pageChange)="p = $event"></pagination-controls></div>
+
+  <button class="btn btn-primary" (click)="goBack()">Back</button>
+</div> 
+
+   <!-- modal popup -->
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" 
+   aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you want to delete the book  ?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="delete()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+ 
+  <div id="mdlSample" class="modal fade" role="dialog" [ngStyle]="{'display': mdlSampleIsOpen ? 'block' : 'none', 'opacity': 1}">
+      <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      <div class="modal-header">
+      <h4 class="modal-title">My Modal</h4>
+      </div>
+      <div class="modal-body">Text here!==== {{delId}}</div>
+      <div class="modal-footer" align="right">
+                 
+                  <button type="button" id="btnClose" class="btn btn-danger" (click)="deletefn(delId)"> Ok</button>
+                   <button type="button" id="btnClose" class="btn btn-danger" (click)="openModal(false)"> Cancel</button>
+                  </div>
+      </div>
+      </div>
+      </div> 

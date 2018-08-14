@@ -1,0 +1,232 @@
+<div class="container" *ngIf="!toggle">
+    <!-- {{bookForm.value | json}} -->
+    <form #bookForm=ngForm (ngSubmit)="save(bookForm)" >
+    <h2>Add Book Details</h2>
+    
+    
+      <div class="form-group" >
+        <input type="hidden" [(ngModel)]="bid" name="bookId"   class="form-control" >
+        
+      </div>
+    
+      <div class="form-group">
+      <label for="bookName">Book Name: </label>
+      <input type="text"  ngModel name="bookName" #bookName="ngModel" class="form-control" required>
+      <div class="alert alert-danger" *ngIf="bookName.touched && !bookName.valid">Book Name has to be entered</div>
+    </div>
+    
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="author">Author:</label>
+          <input type="text" ngModel name="author" #authorName="ngModel" class="form-control" required>
+          <div class="alert alert-danger" *ngIf="authorName.touched && !authorName.valid">Author Name has to be entered</div>
+        </div>
+        
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label for="category">Category:</label>
+            <select class="form-control" ngModel name="category" #category="ngModel" required>
+              <option selected>Choose...</option>
+              <option value="romance">Romance</option>
+              <option value="thriller">Thriller</option>
+              <option value="crime">Crime</option>
+              <option value="comedy">Comedy</option>
+              <option value="comedy">Comic</option>
+              <option value="comedy">Fiction</option>
+              <option value="comedy">Philosophy</option>
+            </select>
+            <div class="alert alert-danger" *ngIf="category.touched && !category.valid">Category has to be selected</div>
+          </div>
+
+      </div>
+    </div>
+    
+
+      <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="publishedOn">Quantity:</label>
+              <input type="text" class="form-control" ngModel name="quantity" #quantity="ngModel" required>
+              <div class="alert alert-danger" *ngIf="quantity.touched && !quantity.valid">Enter the Quantity</div>
+            </div>
+            
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="publishedOn">Published On:</label>
+              <input type="text" class="form-control" ngModel name="publishedOn" #publishedOn="ngModel" required>
+              <div class="alert alert-danger" *ngIf="publishedOn.touched && !publishedOn.valid">Enter the Published Date</div>
+            </div>
+
+          </div>
+        </div>
+    
+      
+      <div>
+        <button class="btn btn-outline-success" type="submit" [disabled]="(bookForm.invalid)" style='margin-right:16px'>Submit</button>
+        <!-- <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#submitBookForm" style='margin-right:16px'>
+            submit
+          </button> -->
+          <ng-template #backButton>
+                <button type="button" class="btn btn-outline-secondary" routerLink="/display-books">
+                  Back
+                </button>
+          </ng-template>
+        <button type="button" class="btn btn-outline-secondary" *ngIf="bookForm.invalid && (bookForm.dirty || bookForm.touched); else backButton" 
+          data-toggle="modal" data-target="#backButtonForFormSubmit">
+            Back
+          </button>
+    
+      </div>
+    </form>
+    </div>
+
+     <!-- Modal  for submit button-->
+  <div class="modal fade" id="submitBookForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+         
+            Do you want to add the book ? == {{bookForm | json}}
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="save(bookForm)">
+                Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- modal popup for back button dirty, touched  submitting the form-->
+  <div class="modal fade" id="backButtonForFormSubmit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Do you want to navigate back ?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-info" data-dismiss="modal" routerLink="/display-books">Go Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ***************************Edit Form *****************************-->
+     <div class="container" *ngIf="toggle">
+        <form (ngSubmit)="editForm(form)" #form="ngForm" >
+            <h2>Edit Book Details</h2>
+       
+        <div class="form-group" >
+          <input type="text" [(ngModel)]="singleBook.bookId" name="bookId" class="form-control" readonly >
+          
+        </div>
+      
+        <div class="form-group">
+        <label for="bookName">Book Name: </label>
+        <input type="text"  [(ngModel)]="singleBook.bookName" name="bookName" #bookName="ngModel" class="form-control" required>
+        <div class="alert alert-danger" *ngIf="bookName.touched && !bookName.valid">Book Name has to be entered</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="author">Author:</label>
+        <input type="text" [(ngModel)]="singleBook.author" name="author" #authorName="ngModel" class="form-control" required>
+        <div class="alert alert-danger" *ngIf="authorName.touched && !authorName.valid">Author Name has to be entered</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="category">Category:</label>
+          <select class="form-control" [(ngModel)]="singleBook.category" name="category" #category="ngModel" required>
+            <option selected>Choose...</option>
+            <option value="romance">Romance</option>
+            <option value="thriller">Thriller</option>
+            <option value="crime">Crime</option>
+            <option value="comedy">Comedy</option>
+            <option value="comedy">Comic</option>
+            <option value="comedy">Fiction</option>
+            <option value="comedy">Philosophy</option>
+          </select>
+          <div class="alert alert-danger" *ngIf="category.touched && !category.valid">Category has to be selected</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="publishedOn">Quantity:</label>
+          <input type="text" class="form-control" [(ngModel)]="singleBook.quantity" name="quantity" #quantity="ngModel" required>
+          <div class="alert alert-danger" *ngIf="quantity.touched && !quantity.valid">Enter the Quantity</div>
+        </div>
+      
+        <div class="form-group">
+          <label for="publishedOn">Published On:</label>
+          <input type="text" class="form-control" [(ngModel)]="singleBook.publishedOn" name="publishedOn" #publishedOn="ngModel" required>
+          <div class="alert alert-danger" *ngIf="publishedOn.touched && !publishedOn.valid">Enter the Published Date</div>
+        </div>
+        
+        <div class="form-group">
+            <button class="btn btn-outline-success" type="submit" [disabled]="form.invalid && (form.dirty || form.touched)" style='margin-right:16px'>Submit</button>
+            <!-- <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#editBookForm" style='margin-right:16px'>
+                submit
+              </button> -->
+          <ng-template #backButton>
+              <button type="button" class="btn btn-outline-secondary" routerLink="/display-books">
+                Back
+              </button>
+        </ng-template>
+      <button type="button" class="btn btn-outline-secondary" *ngIf="form.dirty || form.touched; else backButton" data-toggle="modal" data-target="#backButtonForEditForm">
+          Back
+        </button>
+        </div>
+    </form>
+     <!-- modal popup for editing the book -->
+     <div class="modal fade" id="editBookForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Do you want to edit {{bookName.value}} ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="editForm(form)">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- modal popup for back button dirty, touched  editing form -->
+  <div class="modal fade" id="backButtonForEditForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Do you want to navigate back ?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-info" data-dismiss="modal" routerLink="/display-books">Go Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+     
+    

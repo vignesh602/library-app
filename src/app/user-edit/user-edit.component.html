@@ -1,0 +1,80 @@
+<form #f=ngForm (ngSubmit)="submit(f)" >
+    <div class="container">
+        
+      <h1>Edit User</h1>
+        <div class="form-group">
+            <label for="userId">User Id</label>
+            <input type="text" class="form-control" [(ngModel)]="singleUser.userId" name="userId"   placeholder="Enter Your Name" readonly required>
+          
+          </div>
+     
+      <div class="form-group">
+        <label for="userName">User Name</label>
+        <input type="text" required class="form-control" [(ngModel)]="singleUser.userName" name="userName" #userName="ngModel" placeholder="Enter Your Name">
+        <div class="alert alert-danger" *ngIf="userName.touched && !userName.valid">Username is required</div>
+      </div>
+      <div class="form-group">
+        <label for="dob">Date Of Birth</label>
+        <input type="text" required class="form-control" [(ngModel)]="singleUser.dob" name="dob" #dob="ngModel" placeholder="dd/mm/yyyy">
+        <div class="alert alert-danger" *ngIf="dob.touched && !dob.valid" >DOB is required</div>
+      </div>
+      
+      <div class="form-group">
+          <button type="button" class="btn btn-outline-success" (click)="submit(f)" style='margin-right:16px'>
+              submit
+            </button>
+        <!-- <button class="btn btn-outline-info" (click)="goBack()">Back</button>  -->
+        <ng-template #backButton>
+            <button type="button" class="btn btn-outline-secondary" routerLink="/display-users">
+              Back
+            </button>
+      </ng-template>
+    <button type="button" class="btn btn-outline-secondary" *ngIf="f.dirty || f.touched; else backButton" data-toggle="modal" data-target="#backButton">
+        Back
+      </button>
+      </div>
+      <!-- <button type="submit" class="btn btn-success" [disabled]="!f.valid" style='margin-right:16px'>Submit</button>
+       <button class="btn btn-primary" (click)="goBack()">Back</button>  -->
+    </div>
+    </form> 
+
+     <!-- modal popup -->
+     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Do you want to edit {{userName.value}} ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-info" data-dismiss="modal" (click)="submit(f)">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+       <!-- modal popup for back button dirty, touched -->
+  <div class="modal fade" id="backButton" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Do you want to navigate back ?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-info" data-dismiss="modal" routerLink="/display-users">Go Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
